@@ -52,7 +52,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.metrics = data;
-            if (this.metrics.cpu_usage > 1) {
+            if (this.metrics.cpu_usage > 10) {
               const noti = new Notification('Server is under heavy load', {
                 body: 'CPU usage is at ' + this.metrics.cpu_usage + '%',
                 icon: 'favicon.ico'
