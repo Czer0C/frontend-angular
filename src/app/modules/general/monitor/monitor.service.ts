@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, timer } from 'rxjs';
 import { catchError, retry, timeout, finalize } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
 
 export interface MemoryUsage {
   total: string;
@@ -20,24 +21,28 @@ export interface Metrics {
   providedIn: 'root'
 })
 export class MonitorService {
-  private apiUrl = 'http://localhost:8081/metrics';
-  private readonly TIMEOUT = 30000; // Increased to 30 seconds
+  private readonly TIMEOUT = 30000; // 30 seconds timeout
   private readonly RETRY_COUNT = 3;
-  private readonly RETRY_DELAY = 2000; // Increased to 2 seconds
+  private readonly RETRY_DELAY = 2000; // 2 seconds delay between retries
 
   constructor(private http: HttpClient) { }
 
   getMetrics(): Observable<Metrics> {
-    return this.http.get<Metrics>(this.apiUrl).pipe(
-      timeout(this.TIMEOUT), // ⏳ Timeout after 30s
-      retry({ count: this.RETRY_COUNT, delay: this.RETRY_DELAY }), // 🔁 Retry with delay
-      catchError(this.handleError) // ❌ Handle errors
-      ,finalize(() => {
+    return this.http.get<Metrics>(environment.monitorApi).pipe(
+      timeout(this.TIMEOUT),
+      retry({
+        count: this.RETRY_COUNT,
+        delay: (error, retryCount) => {
+          console.log(`Retry attempt ${retryCount} after error:`, error);
+          return timer(this.RETRY_DELAY * retryCount);
+        }
+      }),
+      catchError(this.handleError),
+      finalize(() => {
         console.log('Metrics request completed');
       })
     );
   }
-
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';

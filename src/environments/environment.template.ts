@@ -4,11 +4,11 @@ export const environment = {
   appInfo,
   application: {
     ...applicationBase,
-    angular: `${applicationBase.angular} DEV`,
+    angular: `${applicationBase.angular} ENV`,
   },
   urlNews: './assets/params/json/mock/trailers.json',
   urlMovies: './assets/params/json/mock/movies.json',
   useDatabase: false,
-  backend: 'http://localhost:3000',
-  monitorApi: 'http://localhost:8081/metrics'
+  backend: 'YOUR_BACKEND_URL',
+  monitorApi: 'YOUR_MONITOR_API_URL'
 };

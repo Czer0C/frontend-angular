@@ -10,4 +10,5 @@ export const environment = {
   urlMovies: './assets/params/json/mock/movies.json',
   useDatabase: true,
   backend: 'http://localhost:3000',
+  monitorApi: 'http://localhost:8081/metrics'
 };
