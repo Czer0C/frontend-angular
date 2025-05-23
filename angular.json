@@ -77,6 +77,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "allowedHosts": [
+              "icdp.fpt.net"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "angular-starter:build:production"
