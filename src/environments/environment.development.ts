@@ -10,5 +10,5 @@ export const environment = {
   urlMovies: './assets/params/json/mock/movies.json',
   useDatabase: false,
   backend: 'http://localhost:3000',
-  monitorApi: 'http://localhost:8081/metrics'
+  monitorApi: 'https://icdp.fpt.net/gonitor'
 };
