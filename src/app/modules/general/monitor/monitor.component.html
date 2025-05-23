@@ -1,0 +1,87 @@
+<div class="container mt-4">
+  <h1>Server Monitor</h1>
+
+  <div *ngIf="error" class="alert alert-danger mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <span>{{ error }}</span>
+      <button class="btn btn-outline-danger btn-sm" (click)="retry()">
+        <i class="fas fa-sync-alt me-1"></i> Retry
+      </button>
+    </div>
+  </div>
+
+  <div class="row mt-4">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">CPU Usage</h5>
+          <div class="d-flex justify-content-center">
+            <div *ngIf="loading" class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div *ngIf="!loading && metrics" class="text-center">
+              <h2 class="display-4">{{ metrics.cpu_usage | number:'1.2-2' }}%</h2>
+              <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" [style.width.%]="metrics.cpu_usage"
+                  [ngClass]="{'bg-success': metrics.cpu_usage < 50, 'bg-warning': metrics.cpu_usage >= 50 && metrics.cpu_usage < 80, 'bg-danger': metrics.cpu_usage >= 80}">
+                </div>
+              </div>
+              <div *ngIf="isValidating" class="spinner-border text-primary small" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Memory Usage</h5>
+          <div class="d-flex justify-content-center">
+            <div *ngIf="loading" class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div *ngIf="!loading && metrics" class="text-center">
+              <h2 class="display-4">{{ metrics.memory_usage.used_percent | number:'1.2-2' }}%</h2>
+              <div class="progress mt-2">
+                <div class="progress-bar" role="progressbar" [style.width.%]="metrics.memory_usage.used_percent"
+                  [ngClass]="{'bg-success': metrics.memory_usage.used_percent < 50, 'bg-warning': metrics.memory_usage.used_percent >= 50 && metrics.memory_usage.used_percent < 80, 'bg-danger': metrics.memory_usage.used_percent >= 80}">
+                </div>
+              </div>
+              <div class="mt-2">
+                <small class="text-muted">
+                  Used: {{ metrics.memory_usage.used }} / {{ metrics.memory_usage.total }}
+                </small>
+              </div>
+              <div *ngIf="isValidating" class="spinner-border text-primary small" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Last Updated</h5>
+          <div class="d-flex justify-content-center">
+            <div *ngIf="loading" class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <div *ngIf="!loading && metrics" class="text-center">
+              <h2 class="h4">{{ metrics.timestamp | date:'medium' }}</h2>
+              <small class="text-muted">Updates every 5 seconds</small>
+              <div *ngIf="isValidating" class="spinner-border text-primary small" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

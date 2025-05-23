@@ -49,6 +49,12 @@ export class HomeComponent {
       description: "Cities List",
       link: '/cities'
     },
+    {
+      icon: "fa-solid fa-gauge-high",
+      name: "monitor",
+      description: "Server Monitoring",
+      link: '/monitor'
+    },
   ]
 
   itemsExamples = [

@@ -7,6 +7,12 @@ export const routes: Routes = [
   { path: '', component: HomeComponent, },
 
   {
+    path: 'monitor',
+    loadComponent: () => import('./modules/general/monitor/monitor.component')
+      .then(mod => mod.MonitorComponent)
+  },
+
+  {
     path: 'prism',
     loadComponent: () => import('./modules/examples/example-prism/tutorial.component')
       .then(mod => mod.TutorialComponent)

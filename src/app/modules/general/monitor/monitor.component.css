@@ -1,0 +1,54 @@
+.card {
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  color: #333;
+  font-weight: 500;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+.progress {
+  height: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.progress-bar {
+  transition: width 0.5s ease-in-out;
+}
+
+.display-4 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.text-muted {
+  font-size: 0.875rem;
+}
+
+.validating-indicator {
+  margin-top: 0.5rem;
+  animation: fadeInOut 1.5s infinite;
+}
+
+.small {
+  width: 1.5rem;
+  height: 1.5rem;
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
