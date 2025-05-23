@@ -52,9 +52,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.metrics = data;
-            if (this.metrics.cpu_usage > 10) {
+            if (this.metrics.memory_usage.used_percent > 70) {
               const noti = new Notification('Server is under heavy load', {
-                body: 'CPU usage is at ' + this.metrics.cpu_usage + '%',
+                body: 'Memory usage is at ' + this.metrics.memory_usage.used_percent + '%',
                 icon: 'favicon.ico'
               });
             }
