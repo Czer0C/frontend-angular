@@ -42,7 +42,9 @@
             "prerender": true,
             "ssr": {
               "entry": "src/server.ts"
-            }
+            },
+            "baseHref": "/angular/",
+            "deployUrl": "/angular/"
           },
           "configurations": {
             "production": {
@@ -60,7 +62,8 @@
               ],
               "outputHashing": "all",
               "serviceWorker": "ngsw-config.json",
-              "baseHref": "/angular/"
+              "baseHref": "/angular/",
+              "deployUrl": "/angular/"
             },
             "development": {
               "optimization": false,
@@ -72,7 +75,8 @@
                   "with": "src/environments/environment.development.ts"
                 }
               ],
-              "baseHref": "/angular/"
+              "baseHref": "/angular/",
+              "deployUrl": "/angular/"
             }
           },
           "defaultConfiguration": "production"
