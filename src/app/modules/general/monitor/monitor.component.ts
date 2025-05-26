@@ -3,7 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Subject, interval } from 'rxjs';
 import { exhaustMap, takeUntil, catchError } from 'rxjs/operators';
 import { SeoService } from '../../../core/services/seo/seo.service';
-import { Metrics, MonitorService } from './monitor.service';
+import { Metrics, MonitorService, ThresholdTracking } from './monitor.service';
 
 @Component({
   selector: 'app-monitor',
@@ -19,9 +19,12 @@ export class MonitorComponent implements OnInit, OnDestroy {
   error: string | null = null;
   private destroy$ = new Subject<void>();
   private isBrowser: boolean;
+  alert: ThresholdTracking;
+
+
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(PLATFORM_ID) private platformId: object,
     private seoService: SeoService,
     private monitorService: MonitorService
   ) {
@@ -29,6 +32,12 @@ export class MonitorComponent implements OnInit, OnDestroy {
 
     this.seoService.setMetaTitle('Server Monitor');
     this.seoService.setMetaDescription('Server monitoring dashboard showing system metrics and performance data');
+
+    this.alert = {
+      count: 0,
+      last_memory: 0,
+      last_cpu: 0
+    }
   }
 
   ngOnInit() {
@@ -39,7 +48,9 @@ export class MonitorComponent implements OnInit, OnDestroy {
           takeUntil(this.destroy$),
           exhaustMap(() => {
             this.isValidating = true;
+
             this.error = null;
+
             return this.monitorService.getMetrics().pipe(
               catchError(err => {
                 this.error = err.message || 'Failed to fetch metrics.';
@@ -52,11 +63,33 @@ export class MonitorComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.metrics = data;
-            if (this.metrics.memory_usage.used_percent > 70) {
-              const noti = new Notification('Server is under heavy load', {
-                body: 'Memory usage is at ' + this.metrics.memory_usage.used_percent + '%',
-                icon: 'favicon.ico'
-              });
+            if (this.metrics.memory_usage.used_percent > 80) {
+
+              this.alert.count = this.alert.count + 1 || 1;
+              this.alert.last_memory = this.metrics.memory_usage.used_percent;
+              this.alert.last_cpu = this.metrics.cpu_usage;
+
+              if (this.alert.count > 5) {
+
+                const msg = `Memory usage is at ${this.alert.last_memory}% and CPU usage is at ${this.alert.last_cpu}%`;
+
+                new Notification('Server is under heavy load', {
+                  body: msg,
+                });
+
+                this.alert = {
+                  count: 0,
+                  last_memory: 0,
+                  last_cpu: 0
+                };
+              }
+            }
+            else {
+              this.alert = {
+                count: 0,
+                last_memory: 0,
+                last_cpu: 0
+              };
             }
             this.isValidating = false;
           },

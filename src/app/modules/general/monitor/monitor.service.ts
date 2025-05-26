@@ -16,6 +16,11 @@ export interface Metrics {
   memory_usage: MemoryUsage;
   timestamp: string;
 }
+export interface ThresholdTracking {
+  count: number;
+  last_memory: number;
+  last_cpu: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +65,7 @@ export class MonitorService {
     }
 
     console.error('Monitor Service Error:', errorMessage);
+
     return throwError(() => new Error(errorMessage));
   }
 }

@@ -26,8 +26,6 @@ export interface NotificationAction {
 })
 export class NotificationService {
   private defaultOptions: NotificationOptions = {
-    icon: '/assets/icons/notification-icon.png',
-    badge: '/assets/icons/notification-badge.png',
     requireInteraction: false,
     silent: false
   };
