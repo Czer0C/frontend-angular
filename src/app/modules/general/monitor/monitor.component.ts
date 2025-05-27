@@ -41,6 +41,7 @@ export class MonitorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
     if (this.isBrowser) {
       // Start polling only in browser (client-side)
       interval(5000)
@@ -63,6 +64,10 @@ export class MonitorComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (data) => {
             this.metrics = data;
+
+            this.seoService.setMetaTitle(`CPU: ${this.metrics?.cpu_usage}%, Memory: ${this.metrics?.memory_usage.used_percent}%`);
+
+
             if (this.metrics.memory_usage.used_percent > 80) {
 
               this.alert.count = this.alert.count + 1 || 1;
